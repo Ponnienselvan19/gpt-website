@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chester Pizza</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #fbfcf7;
+      color: #485843;
+    }
+
+    .font-serif { font-family: 'Cormorant Garamond', serif; }
+
+    .luxury-pattern {
+      min-height: 100vh;
+      background-image:
+        radial-gradient(circle at top left, rgba(151, 184, 143, 0.15), transparent 24%),
+        radial-gradient(circle at top right, rgba(201, 164, 95, 0.12), transparent 20%),
+        linear-gradient(135deg, rgba(255,255,252,0.99), rgba(248,251,242,0.97)),
+        repeating-linear-gradient(
+          135deg,
+          rgba(202, 214, 188, 0.08),
+          rgba(202, 214, 188, 0.08) 2px,
+          transparent 2px,
+          transparent 18px
+        );
+    }
+
+    .container {
+      width: min(1280px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(251, 252, 247, 0.9);
+      border-bottom: 1px solid #e4ead8;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 18px 0;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #485843;
+    }
+
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .nav button {
+      border: none;
+      cursor: pointer;
+      padding: 11px 18px;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      color: #6f7d67;
+      background: transparent;
+      transition: 0.25s ease;
+    }
+
+    .nav button.active {
+      background: #c9a45f;
+      color: white;
+      box-shadow: 0 0 24px rgba(201,164,95,0.22);
+    }
+
+    .nav button:hover {
+      background: #f3f7eb;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 40px;
+      align-items: center;
+      padding: 70px 0 40px;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.35em;
+      font-size: 0.72rem;
+      color: #88a07a;
+      margin-bottom: 18px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(3rem, 7vw, 5.2rem);
+      line-height: 0.95;
+      font-family: 'Cormorant Garamond', serif;
+      color: #485843;
+      max-width: 640px;
+    }
+
+    .hero p {
+      margin-top: 20px;
+      max-width: 620px;
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: #798572;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .mini-add-btn,
+    .place-btn {
+      border: none;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .btn-primary {
+      background: #c9a45f;
+      color: white;
+      padding: 16px 26px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.78rem;
+      box-shadow: 0 0 26px rgba(201,164,95,0.20);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.9);
+      color: #485843;
+      border: 1px solid #d7e4c9;
+      padding: 16px 26px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.78rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 34px;
+      max-width: 620px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #e4ead8;
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .stat strong {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      color: #485843;
+    }
+
+    .stat span {
+      color: #7c8876;
+      font-size: 0.92rem;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.84);
+      border: 1px solid #e4ead8;
+      border-radius: 32px;
+      padding: 20px;
+      box-shadow: 0 30px 90px rgba(146,162,131,0.16);
+    }
+
+    .hero-main-image {
+      position: relative;
+      overflow: hidden;
+      border-radius: 28px;
+      aspect-ratio: 4 / 5;
+    }
+
+    .hero-main-image img,
+    .hero-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+    }
+
+    .hero-main-image:hover img,
+    .hero-thumb:hover img {
+      transform: scale(1.05);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(238,246,223,0.60), transparent, rgba(243,232,199,0.18));
+    }
+
+    .hero-info {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #e4ead8;
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+    }
+
+    .hero-thumbs {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .hero-thumb {
+      aspect-ratio: 1.2 / 1;
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid #e4ead8;
+      background: #f1f6eb;
+    }
+
+    .section {
+      padding: 24px 0 72px;
+    }
+
+    .section-title {
+      max-width: 760px;
+      margin-bottom: 34px;
+    }
+
+    .section-title .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.05;
+      color: #485843;
+    }
+
+    .section-title p {
+      margin-top: 16px;
+      color: #798572;
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card,
+    .contact-box,
+    .form-box,
+    .checkout-box,
+    .summary-box {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #e4ead8;
+      border-radius: 28px;
+      box-shadow: 0 16px 40px rgba(146,162,131,0.12);
+    }
+
+    .feature-card {
+      padding: 28px;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: #485843;
+    }
+
+    .feature-card p {
+      margin: 0;
+      color: #7c8876;
+      line-height: 1.8;
+    }
+
+    .menu-section {
+      margin-bottom: 56px;
+    }
+
+    .menu-section h3 {
+      margin: 0 0 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      color: #485843;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .menu-card {
+      background: rgba(255,255,255,0.94);
+      border: 1px solid #e4ead8;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(146,162,131,0.12);
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+
+    .menu-image {
+      height: 160px;
+      overflow: hidden;
+      background: #f1f6eb;
+    }
+
+    .menu-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+    }
+
+    .menu-card:hover .menu-image img {
+      transform: scale(1.05);
+    }
+
+    .menu-content {
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .badge {
+      display: inline-block;
+      font-size: 0.56rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #88a07a;
+      margin-bottom: 6px;
+    }
+
+    .menu-content h4 {
+      margin: 0 0 6px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      line-height: 1.05;
+      color: #485843;
+    }
+
+    .menu-content p {
+      margin: 0;
+      color: #7c8876;
+      font-size: 0.82rem;
+      line-height: 1.4;
+      min-height: 34px;
+    }
+
+    .menu-bottom {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-top: 6px;
+    }
+
+    .price {
+      color: #485843;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .qty-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      border: 1px solid #dce7cf;
+      background: #fcfdf9;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .qty-control button {
+      border: none;
+      background: transparent;
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+      color: #485843;
+      font-size: 0.95rem;
+    }
+
+    .qty-control span {
+      width: 24px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #485843;
+    }
+
+    .mini-add-btn {
+      background: #c9a45f;
+      color: #fff;
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 0.56rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      white-space: nowrap;
+    }
+
+    .contact-grid,
+    .checkout-grid {
+      display: grid;
+      gap: 26px;
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .contact-box {
+      padding: 24px;
+    }
+
+    .contact-box .label {
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-size: 0.72rem;
+      color: #88a07a;
+      margin-bottom: 10px;
+    }
+
+    .contact-box .value {
+      color: #485843;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.7rem;
+      line-height: 1.3;
+    }
+
+    .form-box,
+    .checkout-box,
+    .summary-box {
+      padding: 30px;
+    }
+
+    .form-box h3,
+    .checkout-box h3,
+    .summary-box h3 {
+      margin: 0 0 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      color: #485843;
+    }
+
+    .form-eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-size: 0.72rem;
+      color: #88a07a;
+      margin-bottom: 12px;
+    }
+
+    .form-box p,
+    .checkout-box p,
+    .summary-box p {
+      color: #7c8876;
+      line-height: 1.7;
+      margin-top: 0;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid #dce7cf;
+      background: #fcfdf9;
+      color: #485843;
+      border-radius: 18px;
+      padding: 16px;
+      font: inherit;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 14px;
+      margin-top: 20px;
+    }
+
+    .send-btn,
+    .place-btn {
+      background: #c9a45f;
+      color: white;
+      border-radius: 999px;
+      padding: 16px 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.74rem;
+    }
+
+    .checkout-grid {
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: start;
+    }
+
+    .checkout-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .toggle-wrap {
+      display: flex;
+      background: #f3f7eb;
+      border: 1px solid #dce7cf;
+      border-radius: 999px;
+      padding: 4px;
+    }
+
+    .toggle-wrap button {
+      border: none;
+      background: transparent;
+      padding: 10px 18px;
+      cursor: pointer;
+      border-radius: 999px;
+      color: #6f7d67;
+      font-size: 0.9rem;
+    }
+
+    .toggle-wrap button.active {
+      background: #c9a45f;
+      color: white;
+    }
+
+    .checkout-actions {
+      margin-top: 22px;
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .summary-box {
+      background: #f1f6eb;
+    }
+
+    .basket-empty-buttons {
+      display: grid;
+      gap: 12px;
+    }
+
+    .basket-empty-buttons button {
+      border: 1px solid #e4ead8;
+      background: rgba(255,255,255,0.7);
+      border-radius: 18px;
+      padding: 14px;
+      text-align: left;
+      cursor: pointer;
+      color: #485843;
+    }
+
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 16px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #e4ead8;
+    }
+
+    .summary-item h4 {
+      margin: 0;
+      color: #485843;
+      font-size: 1.05rem;
+    }
+
+    .summary-item small {
+      color: #798572;
+      display: block;
+      margin-top: 6px;
+    }
+
+    .summary-item-right {
+      text-align: right;
+    }
+
+    .summary-qty {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .summary-qty button {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border: 1px solid #dce7cf;
+      background: white;
+      color: #485843;
+      cursor: pointer;
+    }
+
+    .summary-total {
+      border-top: 1px solid #e4ead8;
+      padding-top: 18px;
+      display: grid;
+      gap: 10px;
+      color: #485843;
+    }
+
+    .summary-total .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .summary-total .grand {
+      font-weight: 700;
+      font-size: 1.18rem;
+      padding-top: 8px;
+    }
+
+    footer {
+      border-top: 1px solid #e4ead8;
+      margin-top: 28px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      padding: 38px 0 54px;
+    }
+
+    .footer-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: #485843;
+      margin-bottom: 10px;
+    }
+
+    .footer-muted,
+    .footer-links button,
+    .footer-details {
+      color: #7a8574;
+      line-height: 1.8;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-links button {
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 0;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .footer-label {
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-size: 0.72rem;
+      color: #88a07a;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 1200px) {
+      .menu-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .contact-grid,
+      .checkout-grid,
+      .feature-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .container {
+        width: min(100% - 28px, 1280px);
+      }
+
+      .nav {
+        width: 100%;
+      }
+
+      .nav button {
+        flex: 1 1 calc(50% - 10px);
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-info {
+        position: static;
+        margin-top: 12px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero-main-image {
+        aspect-ratio: auto;
+      }
+
+      .hero-main-image img {
+        height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="luxury-pattern">
+    <header>
+      <div class="container header-inner">
+        <div class="logo">Chester Pizza</div>
+        <nav class="nav">
+          <button class="nav-btn active" data-page="home">Home</button>
+          <button class="nav-btn" data-page="menu">Menu</button>
+          <button class="nav-btn" data-page="contact">Contact</button>
+          <button class="nav-btn" data-page="checkout">Checkout</button>
+        </nav>
+      </div>
+    </header>
+
+    <main id="home" class="page active">
+      <section class="container hero">
+        <div>
+          <div class="eyebrow">Fresh Pizza • Delivery & Pickup</div>
+          <h1>Hot pizza, fresh sides, and easy online ordering in Chester.</h1>
+          <p>
+            Welcome to Chester Pizza. Order your favourite pizzas, crispy sides, and cold drinks for delivery or pickup. Freshly made, easy to order, and ready when you are.
+          </p>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="showPage('menu')">Explore Menu</button>
+            <button class="btn-secondary" onclick="showPage('checkout')">Order Now</button>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>16</strong>
+              <span>Fresh menu items</span>
+            </div>
+            <div class="stat">
+              <strong>Both</strong>
+              <span>Delivery & pickup</span>
+            </div>
+            <div class="stat">
+              <strong>Fast</strong>
+              <span>Easy online ordering</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-main-image">
+            <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1200&q=80" alt="Margherita pizza">
+            <div class="hero-overlay"></div>
+            <div class="hero-info">
+              <div>
+                <div class="eyebrow" style="margin:0 0 6px; font-size:0.7rem;">Featured</div>
+                <div class="font-serif" style="font-size:2rem; color:#485843;">Margherita Pizza</div>
+                <div style="color:#7c8876; margin-top:6px;">Classic tomato sauce, mozzarella, and basil</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="color:#7c8876; font-size:0.85rem;">From</div>
+                <div style="font-size:1.65rem; font-weight:700; color:#485843;">£11.90</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-thumbs">
+            <div class="hero-thumb">
+              <img src="https://images.unsplash.com/photo-1601924582970-9238bcb495d9?auto=format&fit=crop&w=900&q=80" alt="Pepperoni pizza">
+            </div>
+            <div class="hero-thumb">
+              <img src="https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=900&q=80" alt="Vegetable pizza">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="container section">
+        <div class="section-title">
+          <div class="eyebrow">Why Choose Chester Pizza</div>
+          <h2>Good food, simple ordering, and fast service</h2>
+          <p>
+            Everything on the site is set up the way customers expect from a pizza shop — clear menu sections, quick ordering, and easy delivery or pickup.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>Freshly Made Menu</h3>
+            <p>Pizzas, sides, and drinks laid out clearly so customers can order fast.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Delivery or Pickup</h3>
+            <p>Choose the option that suits you best at checkout.</p>
+          </div>
+          <div class="feature-card">
+            <h3>Easy Online Ordering</h3>
+            <p>Add items, change quantity, and place your order in just a few steps.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <main id="menu" class="page">
+      <section class="container section" style="padding-top:70px;">
+        <div class="section-title">
+          <div class="eyebrow">Curated Menu</div>
+          <h2>Premium pizza, sides, and drinks</h2>
+          <p>Explore our updated menu with real food photography and easy online ordering.</p>
+        </div>
+
+        <div class="menu-section">
+          <h3>Pizzas</h3>
+          <div class="menu-grid" id="pizza-grid"></div>
+        </div>
+
+        <div class="menu-section">
+          <h3>Sides</h3>
+          <div class="menu-grid" id="sides-grid"></div>
+        </div>
+
+        <div class="menu-section">
+          <h3>Drinks</h3>
+          <div class="menu-grid" id="drinks-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <main id="contact" class="page">
+      <section class="container section" style="padding-top:70px;">
+        <div class="contact-grid">
+          <div>
+            <div class="section-title">
+              <div class="eyebrow">Contact Chester Pizza</div>
+              <h2>Visit, call, or order online</h2>
+              <p>A polished contact page with simple details for guests who want delivery, pickup, or direct help with their order.</p>
+            </div>
+
+            <div class="contact-list">
+              <div class="contact-box">
+                <div class="label">Phone</div>
+                <div class="value">+44 1244 555 210</div>
+              </div>
+              <div class="contact-box">
+                <div class="label">Email</div>
+                <div class="value">hello@chesterpizza.co.uk</div>
+              </div>
+              <div class="contact-box">
+                <div class="label">Address</div>
+                <div class="value">18 Pepper Street, Chester, CH1 1DF</div>
+              </div>
+              <div class="contact-box">
+                <div class="label">Opening Hours</div>
+                <div class="value">Mon–Thu: 12:00 PM – 10:00 PM | Fri–Sun: 12:00 PM – 11:00 PM</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-box">
+            <div class="form-eyebrow">Quick Message</div>
+            <h3>We’re here to help</h3>
+            <p>Questions about ingredients, orders, or pickup times? Our team is ready every day.</p>
+
+            <div class="form-grid">
+              <input placeholder="Your name">
+              <input placeholder="Your email">
+              <textarea placeholder="Message"></textarea>
+              <button class="send-btn">Send Message</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <main id="checkout" class="page">
+      <section class="container section" style="padding-top:70px;">
+        <div class="checkout-grid">
+          <div class="checkout-box">
+            <div class="checkout-top">
+              <div>
+                <div class="form-eyebrow" style="margin-bottom:8px;">Online Ordering</div>
+                <h3 style="margin:0;">Checkout</h3>
+              </div>
+
+              <div class="toggle-wrap">
+                <button id="deliveryBtn" class="active" onclick="setOrderType('delivery')">Delivery</button>
+                <button id="pickupBtn" onclick="setOrderType('pickup')">Pickup</button>
+              </div>
+            </div>
+
+            <div class="form-grid">
+              <input id="checkout-name" placeholder="Full name">
+              <input id="checkout-phone" placeholder="Phone number">
+              <input id="checkout-address" placeholder="Delivery address">
+              <textarea id="checkout-note" placeholder="Order note"></textarea>
+            </div>
+
+            <div class="checkout-actions">
+              <button class="btn-secondary" onclick="showPage('menu')">Add More Items</button>
+              <button class="place-btn">Place Order</button>
+            </div>
+          </div>
+
+          <aside class="summary-box">
+            <div class="form-eyebrow" style="margin-bottom:8px;">Your Basket</div>
+            <h3>Order Summary</h3>
+            <div id="basket-content"></div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container footer-grid">
+        <div>
+          <div class="footer-title">Chester Pizza</div>
+          <div class="footer-muted">Premium pizza crafted for delivery and pickup with a fresh, elegant mint-champagne digital experience.</div>
+        </div>
+        <div>
+          <div class="footer-label">Pages</div>
+          <div class="footer-links">
+            <button onclick="showPage('home')">Home</button>
+            <button onclick="showPage('menu')">Menu</button>
+            <button onclick="showPage('contact')">Contact</button>
+            <button onclick="showPage('checkout')">Checkout</button>
+          </div>
+        </div>
+        <div>
+          <div class="footer-label">Details</div>
+          <div class="footer-details">
+            18 Pepper Street, Chester, CH1 1DF<br>
+            +44 1244 555 210<br>
+            hello@chesterpizza.co.uk
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const menu = {
+      pizzas: [
+        {
+          id: 1,
+          name: "Margherita Pizza",
+          desc: "Classic tomato sauce, mozzarella, and fresh basil on a crisp hand-finished base.",
+          price: 11.9,
+          badge: "Classic",
+          image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 2,
+          name: "Pepperoni Pizza",
+          desc: "Loaded with pepperoni slices, mozzarella, and rich tomato sauce.",
+          price: 13.5,
+          badge: "Best Seller",
+          image: "https://images.unsplash.com/photo-1601924582970-9238bcb495d9?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 3,
+          name: "BBQ Chicken Pizza",
+          desc: "Grilled chicken, smoky BBQ sauce, red onion, and melted mozzarella.",
+          price: 14.9,
+          badge: "Smoky",
+          image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 4,
+          name: "Cheese Brust Pizza",
+          desc: "Extra cheesy pizza with a rich stuffed crust and classic tomato base.",
+          price: 15.5,
+          badge: "Cheesy",
+          image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 5,
+          name: "Farmhouse Pizza",
+          desc: "Mushrooms, onions, sweetcorn, peppers, and mozzarella on a tomato base.",
+          price: 13.9,
+          badge: "Loaded Veg",
+          image: "https://images.unsplash.com/photo-1511689660979-10d2b1aada49?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 6,
+          name: "Veg Pizza",
+          desc: "A colourful mix of peppers, onions, mushrooms, olives, and mozzarella.",
+          price: 12.9,
+          badge: "Fresh",
+          image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=1200&q=80",
+        },
+      ],
+      sides: [
+        {
+          id: 7,
+          name: "Chicken Strips",
+          desc: "Golden crispy chicken strips served hot with a dipping sauce.",
+          price: 7.5,
+          image: "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 8,
+          name: "Cheese Bites",
+          desc: "Crunchy breaded cheese bites with a soft melted centre.",
+          price: 6.9,
+          image: "https://images.unsplash.com/photo-1548340748-6d2b7d7da280?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 9,
+          name: "Chicken Wings",
+          desc: "Juicy chicken wings tossed in a bold house seasoning.",
+          price: 8.5,
+          image: "https://images.unsplash.com/photo-1527477396000-e27163b481c2?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 10,
+          name: "Onion Rings",
+          desc: "Crispy battered onion rings served fresh and crunchy.",
+          price: 5.9,
+          image: "https://images.unsplash.com/photo-1639024471283-03518883512d?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 11,
+          name: "Garlic Bread",
+          desc: "Warm oven-baked garlic bread with butter and herbs.",
+          price: 5.5,
+          image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80",
+        },
+      ],
+      drinks: [
+        {
+          id: 12,
+          name: "Pepsi",
+          desc: "A chilled fizzy cola drink served cold and refreshing.",
+          price: 2.8,
+          image: "https://images.unsplash.com/photo-1629203851122-3726ecdf080e?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 13,
+          name: "Coca Cola",
+          desc: "Classic fizzy cola, perfectly chilled for takeaway orders.",
+          price: 2.9,
+          image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 14,
+          name: "Lemonade",
+          desc: "Light sparkling lemonade with a clean citrus finish.",
+          price: 2.7,
+          image: "https://images.unsplash.com/photo-1523677011781-c91d1bbe2f9e?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 15,
+          name: "House Beer",
+          desc: "A cold beer option served chilled for adult customers.",
+          price: 4.9,
+          image: "https://images.unsplash.com/photo-1608270586620-248524c67de9?auto=format&fit=crop&w=1200&q=80",
+        },
+        {
+          id: 16,
+          name: "Still Water",
+          desc: "Pure bottled still water for a clean and simple refreshment.",
+          price: 2.2,
+          image: "https://images.unsplash.com/photo-1564419431636-fe53e5f95b15?auto=format&fit=crop&w=1200&q=80",
+        },
+      ],
+    };
+
+    const allItems = [...menu.pizzas, ...menu.sides, ...menu.drinks];
+    const selectedQuantities = {};
+    let cart = [];
+    let orderType = "delivery";
+
+    const fallbackImage = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='%23fbfcf7'/><rect x='40' y='40' width='720' height='420' rx='28' fill='%23ffffff' stroke='%23e4ead8' stroke-width='6'/><text x='400' y='230' text-anchor='middle' font-family='Arial, sans-serif' font-size='34' fill='%23485843'>Image unavailable</text><text x='400' y='275' text-anchor='middle' font-family='Arial, sans-serif' font-size='22' fill='%23798572'>Please refresh or change the image</text></svg>";
+
+    function showPage(page) {
+      document.querySelectorAll(".page").forEach(el => el.classList.remove("active"));
+      document.getElementById(page).classList.add("active");
+
+      document.querySelectorAll(".nav-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.page === page);
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function setOrderType(type) {
+      orderType = type;
+      document.getElementById("deliveryBtn").classList.toggle("active", type === "delivery");
+      document.getElementById("pickupBtn").classList.toggle("active", type === "pickup");
+      document.getElementById("checkout-address").style.display = type === "delivery" ? "block" : "none";
+      renderBasket();
+    }
+
+    function updateSelectedQty(id, delta) {
+      selectedQuantities[id] = Math.max(1, (selectedQuantities[id] || 1) + delta);
+      renderAllMenus();
+    }
+
+    function addToCart(id) {
+      const item = allItems.find(i => i.id === id);
+      const qty = selectedQuantities[id] || 1;
+      const existing = cart.find(i => i.id === id);
+
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ ...item, qty });
+      }
+
+      selectedQuantities[id] = 1;
+      renderAllMenus();
+      renderBasket();
+      showPage("checkout");
+    }
+
+    function updateCartQty(id, delta) {
+      cart = cart
+        .map(item => item.id === id ? { ...item, qty: Math.max(0, item.qty + delta) } : item)
+        .filter(item => item.qty > 0);
+      renderBasket();
+    }
+
+    function renderCard(item) {
+      const qty = selectedQuantities[item.id] || 1;
+
+      return `
+        <div class="menu-card">
+          <div class="menu-image">
+            <img src="${item.image}" alt="${item.name}" onerror="this.onerror=null;this.src='${fallbackImage}'">
+          </div>
+          <div class="menu-content">
+            <div>
+              ${item.badge ? `<span class="badge">${item.badge}</span>` : ""}
+              <h4>${item.name}</h4>
+              <p>${item.desc}</p>
+            </div>
+            <div class="menu-bottom">
+              <div class="price">£${item.price.toFixed(2)}</div>
+              <div class="qty-wrap">
+                <div class="qty-control">
+                  <button onclick="updateSelectedQty(${item.id}, -1)">−</button>
+                  <span>${qty}</span>
+                  <button onclick="updateSelectedQty(${item.id}, 1)">+</button>
+                </div>
+                <button class="mini-add-btn" onclick="addToCart(${item.id})">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderAllMenus() {
+      document.getElementById("pizza-grid").innerHTML = menu.pizzas.map(renderCard).join("");
+      document.getElementById("sides-grid").innerHTML = menu.sides.map(renderCard).join("");
+      document.getElementById("drinks-grid").innerHTML = menu.drinks.map(renderCard).join("");
+    }
+
+    function renderBasket() {
+      const wrap = document.getElementById("basket-content");
+
+      if (!cart.length) {
+        wrap.innerHTML = `
+          <p>Your basket is empty. Choose from our premium menu to begin your order.</p>
+          <div class="basket-empty-buttons">
+            ${allItems.slice(0,3).map(item => `
+              <button onclick="addToCart(${item.id})">
+                <div style="font-weight:600;">${item.name}</div>
+                <div style="font-size:0.9rem; color:#798572; margin-top:4px;">£${item.price.toFixed(2)}</div>
+              </button>
+            `).join("")}
+          </div>
+        `;
+        return;
+      }
+
+      const subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+      const deliveryFee = orderType === "delivery" ? 3.99 : 0;
+      const total = subtotal + deliveryFee;
+
+      wrap.innerHTML = `
+        <div>
+          ${cart.map(item => `
+            <div class="summary-item">
+              <div>
+                <h4>${item.name}</h4>
+                <small>£${item.price.toFixed(2)} each</small>
+              </div>
+              <div class="summary-item-right">
+                <div style="font-weight:700; color:#485843;">£${(item.price * item.qty).toFixed(2)}</div>
+                <div class="summary-qty">
+                  <button onclick="updateCartQty(${item.id}, -1)">−</button>
+                  <span>${item.qty}</span>
+                  <button onclick="updateCartQty(${item.id}, 1)">+</button>
+                </div>
+              </div>
+            </div>
+          `).join("")}
+
+          <div class="summary-total">
+            <div class="row">
+              <span>Subtotal</span>
+              <span>£${subtotal.toFixed(2)}</span>
+            </div>
+            <div class="row">
+              <span>${orderType === "delivery" ? "Delivery fee" : "Pickup"}</span>
+              <span>${orderType === "delivery" ? `£${deliveryFee.toFixed(2)}` : "Free"}</span>
+            </div>
+            <div class="row grand">
+              <span>Total</span>
+              <span>£${total.toFixed(2)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    renderAllMenus();
+    renderBasket();
+    setOrderType("delivery");
+  </script>
+</body>
+</html>
